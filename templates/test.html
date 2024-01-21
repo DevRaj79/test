@@ -1,0 +1,566 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fetch and Show Data Line by Line</title>
+</head>
+
+<body>
+    <div id="messages"></div>
+    <input type="text" id="urlInput" placeholder="Enter URL">
+    <input type="text" id="tagInput" placeholder="Enter HTML tag">
+    <button onclick="sendMessage()">Fetch Data</button>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script>
+        const socket = io.connect('http://' + document.domain + ':' + location.port);
+        let bdata = ''
+        // Receive message from the server
+        socket.on('message_from_server', function (message) {
+            // document.getElementById('messages').innerHTML += message;
+            bdata += message
+            console.log(bdata)
+        });
+
+        // Function to send message to the server
+        function sendMessage() {
+            socket.emit('url_from_client', localStorage.getItem('prev'), 'p');
+        }
+    </script>
+</body>
+
+</html> -->
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="../asset/icon.ico" type="image/x-icon">
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&family=Rubik+Glitch&family=Sevillana&display=swap"
+        rel="stylesheet">
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+
+    <style>
+        .chat {
+            display: flex;
+            width: 60%;
+            /* justify-content: space-around; */
+        }
+
+        @media only screen and (max-width: 1100px) {
+            .chat {
+                width: 100%;
+            }
+        }
+
+        #bottom_bottom {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 30px;
+            width: 100%;
+            margin-top: 50px;
+            border-radius: 5px;
+            position: fixed;
+            bottom: 10px;
+            left: 0;
+            align-items: center;
+            margin-top: 50px;
+        }
+
+        input[type="text"] {
+            border: 0;
+            background: rgb(227, 227, 227);
+            height: 100%;
+            width: 80%;
+            border-radius: 5px 0 0 5px;
+            max-width: 200px;
+            padding-inline: 15px;
+        }
+
+        input:focus {
+            outline: none;
+        }
+
+        button {
+            width: 20%;
+            height: 100%;
+            border: 0;
+            border-radius: 0 5px 5px 0;
+            max-width: 100px;
+            cursor: pointer;
+        }
+
+        .user {
+            flex-direction: row-reverse;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .chat {
+            min-height: 50px;
+            margin-top: 50px;
+            border-bottom: 0.5px solid rgb(240, 242, 245);
+        }
+
+        .chatX {
+            min-height: 15px;
+            margin-top: 15px;
+        }
+
+        /* section a {
+            
+        } */
+
+        .chat_left {
+            height: 25px;
+            background-color: rgb(240, 242, 245);
+            margin-inline: 10px;
+            border-radius: 5px;
+        }
+
+        .chat_left strong {
+            padding-inline: 10px;
+
+        }
+
+        .bot {
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .MechaResponse {
+            font-size: 15px;
+            padding-block: 10px 10px;
+            text-align: start;
+            width: 500px
+        }
+
+        @media only screen and (max-width: 1100px) {
+            .MechaResponse {
+                width: auto;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="../boiler.css">
+    <title>EMP/Mecha</title>
+</head>
+
+<body>
+    <nav>
+        <div>
+            <div id="nav_left">
+                <!-- <h2>Surajmal Vihar-EMP</h2> -->
+                <img src="../asset/sose.png" alt="">
+                <img src="../asset/logo_emp.png" alt="">
+                <img src="../asset/logo.png" alt="">
+            </div>
+            <div id="nav_middle">
+
+                <a href="../index.html" class="links">Home</a>
+                <a href="contacts.html" class="links">Contact</a>
+                <a href="latest.html" class="links">Latests</a>
+                <a href="events.html" class="links">Event</a>
+
+            </div>
+            <div id="nav_right">
+                <a href="chat.html"><ion-icon name="chatbubble"></ion-icon></a>
+                <a href=""><ion-icon name="bug"></ion-icon></a>
+                <a href=""><ion-icon name="search"></ion-icon></a>
+                <a href=""><ion-icon name="notifications"></ion-icon></a>
+
+            </div>
+        </div>
+        <div id="hidden">
+
+            <a href="../index.html" class="links">Home</a>
+            <a href="contacts.html" class="links">Contact</a>
+            <a href="latest.html" class="links">Latests</a>
+            <a href="events.html" class="links">Event</a>
+
+        </div>
+    </nav>
+    <main>
+        <section id="page1" style="min-height: 100vh; height: auto;    padding-bottom: calc(100vh - 350px);">
+            <div id="top" style="display: flex;flex-direction: column;justify-content: center;align-items: center;">
+                <p style="width: 200px;
+                    height: 200px;
+                    background-position: center -145px;
+                    background-image: url(../asset/ai.gif);
+                    background-size: 700px;
+                    border-radius: 500px;
+                    border: 2px solid black;">
+                </p>
+                <h1 id="ai">Mecha</h1>
+                <h4>Ask me anything related to EMP club</h4>
+            </div>
+
+
+            <div id="bottom" style="padding: 25px; min-height: 300px;">
+                <div id="bottom_top" style="    display: flex;
+                    height: 90%;
+                    align-items: center;
+                    flex-direction: column;">
+
+
+                </div>
+                <div id="bottom_bottom">
+                    <input type="text" id="input" placeholder="Type your message...">
+                    <button id="send"> send </button>
+                </div>
+            </div>
+
+
+        </section>
+
+
+        <script>
+            if (localStorage.getItem('visit') == null) {
+                swal({
+                    title: "Introducing Mecha",
+                    text: `A chatbot who will help with all your queries related to EMP. Please use english only ❤`,
+                    icon: `https://clipart-library.com/img/1974839.png`,
+                    button: "ok ",
+                });
+                localStorage.setItem('visit', '1')
+            }
+
+            let input = document.getElementById('input')
+            let send = document.getElementById('send')
+            let cont = document.getElementById('bottom_top')
+
+            function createMsg(dta, outp, elem, id) {
+                elem.innerHTML = `
+                <div class="chat_left">
+                        <p>
+                            <strong>${dta} </strong>
+                        </p>
+                        </div>
+                        <div class=" chat_right">
+                        <p class='${dta}Response' id='completion${id}'>${outp}</p>
+                        </div>
+                </div>
+                `
+
+                cont.append(elem)
+            }
+
+            let id = 0
+            function generate() {
+                let elem = document.createElement('div')
+                let data = input.value
+                let stripped = data.replace(/\s+/g, '');
+                data = data.toLowerCase()
+                data = data.replace("'", '')
+                const mechatronicsTerms = ['automation', 'control', 'robotics', 'sensors', 'actuators', 'plc', 'hmi', 'feedback', 'pid', 'motion', 'vision', 'integration', 'embedded', 'hydraulics', 'pneumatics', 'design', 'programming', 'microcontrollers', 'motors', 'kinematics', 'dynamics', 'cad', 'cam', 'mechaedu', 'industry', 'iot', 'learning', 'ai', 'sustainable', 'efficiency', 'vibration', 'prototyping', 'simulations', 'fault', 'dsp', 'electromechanical', 'systems', 'modeling', 'digitaltwin', 'testing', 'cobots', 'scada', 'mems', 'vr', 'electrohydraulic', 'electropneumatic', 'motion', 'manipulators', 'automatic', 'teleoperation', 'microcontroller', 'realtime', 'analysis', 'kinematics', 'optimization', 'bearings', 'nonlinear', 'adaptive', 'biomechatronics', 'humanoid', 'ethics', 'flexible', 'prototyping', 'computervision', 'telecommunications', 'acquisition', 'fea', 'raspberrypi', 'arduino', 'memssensors', 'control', 'tactile', 'applications', 'drones', 'agvs', 'materials', 'monitoring', 'fuzzylogic', 'agriculture', 'renewable', 'digitaltwin', 'exoskeletons', 'smartmaterials', 'mri', 'hybrid', 'swarm', 'biomechanics', 'wearable', 'neuralnetworks', 'simulation', 'modeling', 'motors', 'sensors', 'actuators', 'controllers', 'encoders', 'gears', 'servos', 'microcontrollers', 'power-supplies', 'batteries', 'chassis', 'frames', 'wheels', 'legs', 'joints', 'links', 'cables', 'connectors', 'brackets', 'bearings', 'grippers', 'end-effectors', 'cams', 'pulleys', 'belts', 'slides', 'rails', 'guides', 'switches', 'relays', 'valves', 'pumps', 'nozzles', 'sprayers', 'tanks', 'screws', 'nuts', 'bolts', 'washers', 'nuts-and-bolts', 'soldering-iron', 'welding-kit', 'circuit-boards', 'modules', 'solenoids', 'plugs', 'adapters', 'solder', 'heat-sinks', 'resistor', 'led', 'button', 'potentiometer', 'servo', 'motor', 'relay', 'transistor', 'diode', 'capacitor', 'breadboard', 'jumperwire', 'lcd', 'sensor', 'encoder', 'gyroscope', 'accelerometer', 'ultrasonic', 'infrared', 'bluetooth', 'wifi', 'gps', 'rtc', 'sdcard', 'steppermotor', 'driver', 'shield', 'display', 'matrix', 'touchscreen', 'piezo', 'sound', 'microphone', 'speaker', 'amplifier', 'thermistor', 'dhtsensor', 'humidity', 'gas', 'rfid', 'nfc', 'magnetic', 'photoresistor', 'colorsensor', 'irremote', 'vibration', 'joystick', 'rfmodule', 'polarize', 'emp', 'polarise', 'robot', 'induct', 'elect', 'switch', 'button'];
+
+
+                // Feel free to use or modify this array as needed.
+
+
+                if (stripped !== "") {
+                    elem.setAttribute('class', 'chat user')
+                    createMsg('You', data, elem)
+
+
+                    input.value = ""
+
+                    let belem = document.createElement('div')
+
+
+                    var bdata = ''
+
+
+
+                    belem.setAttribute('class', 'chat bot')
+
+                    if (data.includes('hello') || data.includes('hey') || data.includes('hi') || data.includes('good morning') || data.includes('good afternoon') || data.includes('good evening')) {
+
+                        bdata = 'Hi, how can I help you?🙂'
+
+                    }
+                    else if (data.includes('what is emp') || data.includes("whats emp")) {
+
+                        bdata = 'EMP, or Electro-Mechanical Production, refers to the manufacturing process that combines electrical and mechanical components to create finished products.'
+
+                    }
+                    else if (data.includes('why') && data.includes('emp') && !data.includes('club')) {
+
+                        bdata = 'EMP is crucial for integrating mechanical engineering with electronics and computer science. This interdisciplinary field enhances automation, robotics, and product development. By optimizing performance and promoting energy efficiency, mechatronics improves various industries, from manufacturing to healthcare. Its applications in smart devices, medical equipment, and sustainable technologies underscore its essential role in advancing human capabilities and well-being.'
+
+
+
+
+
+                    }
+                    else if (data.includes('benefit')) {
+
+                        bdata = `
+                        <strong>
+                        Integration of Multiple Disciplines:
+                        </strong></br>
+                        
+                        Mechatronics integrates knowledge from different engineering disciplines, allowing professionals to design and create intelligent systems that combine mechanical, electronic, and software components.</br>
+                        <strong>
+                            Efficient System Design:
+                            </strong></br>
+                            Mechatronics facilitates the efficient design of complex systems by considering the interaction of mechanical and electronic components. This integrated approach often leads to more streamlined and optimized solutions.
+                            `
+
+
+
+
+
+                    }
+                    else if (data.includes('full form') && data.includes('emp')) {
+
+                        bdata = 'Electro Mechanical Production'
+
+
+
+
+
+                    }
+                    else if (data.includes('why') && data.includes('emp') && data.includes('club')) {
+
+                        bdata = 'To enhance students learning , their interest towards mechatronics .'
+
+                    }
+                    else if (!data.includes('vice') && data.includes('president')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='../asset/manav.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Manav Jha is our president from 9th b</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('vice')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Vanshika Chauhan is our Vice-president from 9th-B</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('project manager')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='../asset/bubula.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Bablu Joshi is our Project manager from 9th-B</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('technical')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='../asset/dev.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Dev Raj is our Technical head from 9th-B</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('secretary')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Prakhar Mathur is our Club Secretary from 9th-C</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('event manager')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='../asset/harshit.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Harshit Sharma is our Event manager from 9th-B</strong>
+                        </div>
+                        `
+                    }
+                    else if (data.includes('co') && data.includes('ordinator')) {
+                        bdata = `
+                        <div style='display:flex ; align-items: center; margin-block:5px'>
+                            <img src='../asset/taiyaba.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Taiyaba is our Club coordinator 1 from 9th-B</strong>
+                        </div>
+                        <div style='display:flex ; align-items: center;'>
+                            <img src='../asset/ananya.jpeg' style = 'width : 100px; border-radius: 500px; margin-right: 10px'></img> <strong>Ananya Jha is our Club coordinator 2 from 9th-A</strong>
+                        </div>
+                        `
+                    }
+
+                    // else if (data.includes('mentor') || data.includes('teacher')) {
+                    //     bdata = `
+                    //     <div style='display:flex ; align-items: center; margin-block:5px'>
+                    //         <p style = 'width : 100px;height:100px ; border-radius: 500px; margin-right: 10px;background:url("../asset/shad.png");backgound-posiion:center 0px; background-size:contain'></p> <strong>Mr. Shad Qaiser</strong>
+                    //     </div>
+                    //     <div style='display:flex ; align-items: center;'>
+                    //         <p style = 'width : 100px;height:100px ; border-radius: 500px; margin-right: 10px;background:url("../asset/khalid.png");backgound-posiion:center 0px; background-size:cover'></p> <strong>Mr. Khalid</strong>
+                    //     </div>
+                    //     `
+                    // }
+                    else if (data.includes('elaborate') || data.includes('explain') || data.includes('breif') && data.includes('tell')) {
+
+                        const socket = io.connect('http://' + document.domain + ':' + location.port);
+                        bdata = 'Explaining ... '
+                        // Receive message from the server
+                        socket.on('message_from_server', function (message) {
+                            let xelem = document.createElement('div')
+                            xelem.setAttribute('class', "chatX bot")
+                            xelem.innerHTML = `
+                                    </div>
+                                    <div class=" chat_right">
+                                    <p class="MechaResponse" id="completion${id}">${message}</span>
+                                    </div>
+                            `
+
+                            cont.append(xelem)
+                        });
+
+                        // Function to send message to the server
+                        function sendMessage() {
+                            socket.emit('url_from_client', localStorage.getItem('prev'), 'p');
+                        }
+                        sendMessage()
+
+                    }
+                    else {
+                        function containsMechatronicsTerm(inputString) {
+                            return mechatronicsTerms.some(term => inputString.includes(term));
+                        }
+
+                        const testString = 'This is a string with robotics and programming.';
+                        if (containsMechatronicsTerm(data)) {
+                            data = data.replace('emp', 'electro mechanical production')
+                            async function fetchData() {
+                                try {
+                                    const apiKey = 'AIzaSyBaM9KVDHpGy4Dn9hXCPRLTBqU4pS_K9JI';
+                                    const apiKey2 = 'AIzaSyBw0QO3tbQSxSfnsrerqmkUbn81v_0lUYU';
+                                    const cx = 'd7bb9924b7eaf4d64';
+                                    const cx2 = 'e10c244f810de4f17';
+                                    const query = data;
+
+                                    const apiUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey}&cx=${cx}`;
+
+                                    const apiUrl2 = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(query)}&key=${apiKey2}&cx=${cx2}`;
+
+                                    const response = await fetch(apiUrl2);
+
+                                    // }
+                                    // catch (error) {
+
+                                    //     response = await fetch(apiUrl2);
+
+                                    // }
+
+                                    if (!response.ok) {
+                                        throw new Error(`HTTP error! Status: ${response.status}`);
+                                    }
+
+                                    const searchData = await response.json();
+
+                                    // Process the data and extract the most relevant answer
+                                    bdata = findMostRelevantResult(searchData.items);
+
+                                    if (bdata) {
+                                        console.log('Most Relevant Answer:', bdata.title);
+                                        console.log('Snippet:', bdata.snippet);
+                                        console.log('Link:', bdata.link);
+                                        localStorage.setItem('prev', bdata.link)
+                                        // Perform operations that depend on bdata here
+                                        snippet = bdata.htmlSnippet
+                                        if (snippet.includes('Jan') || snippet.includes('Feb') || snippet.includes('Mar') || snippet.includes('Apr') || snippet.includes('May') || snippet.includes('Jun') || snippet.includes('Jul') || snippet.includes('Aug') || snippet.includes('Sep') || snippet.includes('Oct') || snippet.includes('Nov') || snippet.includes('Dec')) {
+
+                                            refined_data = snippet.slice(15)
+                                        }
+                                        refined_data = snippet.replace('...', '')
+
+                                        console.log(refined_data)
+                                        createMsg('Mecha', '. . .', belem, id);
+                                        var typed = new Typed(`#completion${id}`, {
+                                            strings: [`${refined_data}</br> </br><strong>source:</strong></br> <a href='${bdata.link}' style='display: inline-block;
+                                            width: auto;
+                                            max-width: 300px;
+                                            overflow: hidden;
+                                            text-overflow: ellipsis;
+                                            text-wrap: nowrap;
+                                            background: rgb(240, 242, 245);
+                                            padding: 2.5px;
+                                            border-radius: 5px;
+                                            color: black;
+                                            text-decoration: none;
+                                            border: 0.5px solid rgb(100, 100, 100)'>${bdata.link}</a>`],
+                                            typeSpeed: 5,
+                                            cursorChar: '',
+                                            startDelay: 1000
+                                        });
+
+                                        // Continue with other operations that depend on bdata
+
+                                        id = id + 1;
+                                        window.scrollBy(0, 800);
+                                        data = '';
+                                    } else {
+                                        console.log('No relevant answer found.');
+                                    }
+                                } catch (error) {
+                                    console.error('Error fetching search results:', error.message);
+                                }
+                            }
+                            function findMostRelevantResult(results) {
+
+                                return results && results.length > 0 ? results[0] : null;
+                            }
+                            // Call the asynchronous function
+                            fetchData();
+
+                        } else {
+                            bdata = 'I am a learing Bot and trained only to answer queries related to EMP. please fill your query in this <a href="https://forms.gle/8gbRRSdgeUfSfTAu7">form</a> if you feel we made a mistake guessing your prompt so my developer can update me. '
+                        }
+
+
+
+                    }
+
+
+                    createMsg('Mecha', '. . .', belem, id)
+                    var typed = new Typed(`#completion${id}`, {
+                        strings: [bdata],
+                        typeSpeed: 5,
+                        cursorChar: '',
+                        startDelay: 1000
+                    });
+                    id = id + 1
+                    window.scrollBy(0, 800);
+                    data = ''
+                }
+
+            }
+            send.addEventListener('click', () => {
+                generate()
+            })
+            document.addEventListener('keydown', function (event) {
+                // Check if the pressed key is "Enter" or "NumpadEnter"
+                if (event.code === 'Enter' || event.code === 'NumpadEnter') {
+                    // Your code to handle the Enter key press goes here
+                    generate()
+                }
+            });
+
+
+        </script>
+        <script>
+
+        </script>
+
+
+    </main>
+</body>
+
+</html>
